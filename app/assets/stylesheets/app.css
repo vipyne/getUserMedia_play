@@ -1,0 +1,11 @@
+li {
+  list-style: none;
+}
+
+video {
+  width: 640px;
+  height: 480px;
+  background: rgba(255,255,255,0.5);
+/*  think need compass/SASS for this to work
+  filter: grayscale(1);*/
+}
