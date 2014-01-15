@@ -1,6 +1,7 @@
 $(document).ready(function(){
 /////////////////////////////
 
+
   navigator.getUserMedia  = navigator.getUserMedia ||
                             navigator.webkitGetUserMedia ||
                             navigator.mozGetUserMedia ||
@@ -22,7 +23,6 @@ $(document).ready(function(){
       // }
     }, errorCallback)
 
-    $('p#your_name').css('color', 'blue')
   })
 
 /////////////////////////////

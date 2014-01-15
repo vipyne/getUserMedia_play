@@ -1,11 +1,22 @@
-$(function() {
-/////////////////////////////
+// $(function() {
+// /////////////////////////////
 
-  var source = $('#your-name').html()
-  var template = Handlebars.compile(source)
-  var context = { gila: "your name"}
+//   $('form.click').on('submit', function(event) {
+//     var source = $('#your-name').html()
+//     var template = Handlebars.compile(source)
 
-  $('.name').html(template(context))
+//     $.ajax({
+//       url: "/",
+//       type: 'POST'
+//       // data:
+//     })
+//       .done(function(data){
+//         console.log("data ", data)
+//         $('.name').html(template(data))
+//     })
+//   })
+//   // var context = { name: "your name"}
 
-/////////////////////////////
-})
+
+// /////////////////////////////
+// })
