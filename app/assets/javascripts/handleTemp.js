@@ -3,9 +3,9 @@ $(function() {
 
   var source = $('#your-name').html()
   var template = Handlebars.compile(source)
-  var context = {}
+  var context = { gila: "your name"}
 
-  $('.container').html(template({}))
+  $('.name').html(template(context))
 
 /////////////////////////////
 })
