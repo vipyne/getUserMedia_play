@@ -10,7 +10,7 @@ $(document).ready(function(){
     console.log('you said no. bummer.', e)
   }
 
-  $('button.click').on('click', function(event) {
+  $('button.click').on('change', function(event) {
     console.log('clicked')
 
     navigator.getUserMedia({video: true}, function(localMediaStream) {
