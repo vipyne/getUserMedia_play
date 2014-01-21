@@ -8,4 +8,57 @@ video {
   background: rgba(255,255,255,0.5);
 /*  think need compass/SASS for this to work
   filter: grayscale(1);*/
+  overflow: hidden;
+  z-index: 3;
+  position: absolute;
+  margin-top: 1em;
+  margin-left: 1em;
+}
+
+div.your-video {
+  width: 640px;
+  height: 480px;
+  border: 1em solid pink;
+  -webkit-border-radius: 2em;
+  border-radius: 2em;
+  overflow: hidden;
+  z-index: 10;
+  position: absolute;
+}
+
+p {
+  position: absolute;
+}
+
+ul {
+  width: 60%;
+  height: 110%;
+  padding: 1em;
+  border: .1em solid;
+  border-radius: 2em;
+  position: absolute;
+}
+
+input,
+button {
+  border: .1em solid;
+  border-radius: 1em;
+  outline: none;
+  background-color: white;
+}
+
+input {
+  padding: .25em;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+div.container {
+  width: 90%;
+  height: 90%;
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 10px;
 }

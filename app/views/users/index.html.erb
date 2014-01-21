@@ -1,14 +1,26 @@
-<div>
+<div class="container">
 
   <ul>
     <li>
-      <button class="click">click here to see you.</button>
-    </li>
-    <li>
-      <p id="your_name">your name.</p>
-    </li>
-    <li>
-      <video autoplay></video>
-    </li>
-  </ul>
-</div>
+      <form class="your-name">
+        <input autofocus type="text" placeholder=" your name"></form>
+      </li>
+      <li>
+        <button class="click">see yourself</button>
+      </li>
+      <li>
+        <div class="name">
+        </div>
+      </li>
+      <li>
+        <div class="your-video">
+        </div>
+        <video autoplay></video>
+      </li>
+    </ul>
+
+  </div>
+
+  <script id="your-name" type="text/x-handlebars-template">
+  {{name}}
+  </script>

@@ -10,19 +10,23 @@ $(document).ready(function(){
     console.log('you said no. bummer.', e)
   }
 
-  $('button.click').on('click', function(event) {
-    console.log('clicked')
+  $('.your-video').hide()
+
+  $('button.click').on('click', $('form.your-name'), function(event) {
+
+    $('button.click').remove()
+    $('input').remove()
 
     navigator.getUserMedia({video: true}, function(localMediaStream) {
       var video = document.querySelector('video');
       video.src = window.URL.createObjectURL(localMediaStream);
+      $('.your-video').show()
 
       // video.onloadedmetadata = function(e) {
       //   // fun stuff to come
       // }
     }, errorCallback)
 
-    $('p#your_name').css('color', 'blue')
   })
 
 /////////////////////////////
