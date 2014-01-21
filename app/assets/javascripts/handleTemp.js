@@ -1,10 +1,10 @@
 $(function() {
 /////////////////////////////
 
-  $('form.click').on('submit', function(event) {
+  $('button.click').on('click', function(event) {
+    debugger
     var source = $('#your-name').html()
     var template = Handlebars.compile(source)
-    debugger
 
     $.ajax({
       url: "/",
