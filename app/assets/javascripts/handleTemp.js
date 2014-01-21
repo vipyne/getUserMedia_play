@@ -2,7 +2,7 @@ $(function() {
 /////////////////////////////
 
   $('button.click').on('click', function(event) {
-    debugger
+    // debugger
     var source = $('#your-name').html()
     var template = Handlebars.compile(source)
 

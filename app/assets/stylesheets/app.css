@@ -30,6 +30,35 @@ p {
   position: absolute;
 }
 
-div {
-  border: 15px;
+ul {
+  width: 60%;
+  height: 110%;
+  padding: 1em;
+  border: .1em solid;
+  border-radius: 2em;
+  position: absolute;
+}
+
+input,
+button {
+  border: .1em solid;
+  border-radius: 1em;
+  outline: none;
+  background-color: white;
+}
+
+input {
+  padding: .25em;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+div.container {
+  width: 90%;
+  height: 90%;
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 10px;
 }
