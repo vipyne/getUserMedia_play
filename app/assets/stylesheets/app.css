@@ -31,7 +31,7 @@ div.your-video {
 }
 
 div.my-border {
-  transform: translateX(5em) translateY(1em) matrix(1, -0.05, 0, 1, -.2, 0);
+  transform: translateX(5em) translateY(1em) matrix(1, -0.05, -.2, 1, 0, 0);
   -webkit-transform: translateX(5em) translateY(1em) matrix(1, -0.05, -.2, 1, 0, 0);
   width: 640px;
   height: 480px;
