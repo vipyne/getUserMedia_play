@@ -1,33 +1,33 @@
 $(document).ready(function(){
 /////////////////////////////
 
-  // navigator.getUserMedia  = navigator.getUserMedia ||
-  //                           navigator.webkitGetUserMedia ||
-  //                           navigator.mozGetUserMedia ||
-  //                           navigator.msGetUserMedia;
+  navigator.getUserMedia  = navigator.getUserMedia ||
+                            navigator.webkitGetUserMedia ||
+                            navigator.mozGetUserMedia ||
+                            navigator.msGetUserMedia;
 
-  // var errorCallback = function(e) {
-  //   console.log('you said no. bummer.', e)
-  // }
+  var errorCallback = function(e) {
+    console.log('you said no. bummer.', e)
+  }
 
-  // $('.your-video').hide()
+  $('.your-video').hide()
 
-  // $('button.click').on('click', $('form.your-name'), function(event) {
+  $('button.click').on('click', $('form.your-name'), function(event) {
 
-  //   $('button.click').remove()
-  //   $('input').remove()
+    $('button.click').remove()
+    $('input').remove()
 
-  //   navigator.getUserMedia({video: true}, function(localMediaStream) {
-  //     var video = document.querySelector('video');
-  //     video.src = window.URL.createObjectURL(localMediaStream);
-  //     $('.your-video').show()
+    navigator.getUserMedia({video: true}, function(localMediaStream) {
+      var video = document.querySelector('video');
+      video.src = window.URL.createObjectURL(localMediaStream);
+      $('.your-video').show()
 
-  //     // video.onloadedmetadata = function(e) {
-  //     //   // fun stuff to come
-  //     // }
-  //   }, errorCallback)
+      // video.onloadedmetadata = function(e) {
+      //   // fun stuff to come
+      // }
+    }, errorCallback)
 
-  // })
+  })
 
 /////////////////////////////
 })
