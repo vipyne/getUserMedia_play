@@ -17,6 +17,7 @@ $(document).ready(function(){
     $('button.click').remove()
     $('input').remove()
 
+    if (navigator.getUserMedia) {
     navigator.getUserMedia({video: true}, function(localMediaStream) {
       var video = document.querySelector('video');
       video.src = window.URL.createObjectURL(localMediaStream);
@@ -28,6 +29,9 @@ $(document).ready(function(){
     }, errorCallback)
 
   })
+} else {
+  document.write("sorry, you don't gots a camera")
+}
 
 /////////////////////////////
 })
