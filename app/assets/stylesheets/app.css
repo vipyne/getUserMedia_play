@@ -22,6 +22,9 @@ h1 {
 }
 
 video {
+  filter: grayscale(1);
+  -webkit-filter: hue-rotate(180deg );
+  /*-webkit-filter: saturate(1);*/
   width: 640px;
   height: 480px;
   background: rgba(255,255,255,0.5);
