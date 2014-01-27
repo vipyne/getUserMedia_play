@@ -133,7 +133,7 @@ div.my-border {
   100% {
     -webkit-filter: hue-rotate(0deg) saturate(1);
     transform: matrix(1, -0.05, .2, 1, 0, 0);
-    -webkit-transform: matrix(1, -0.05, .2, 1, 0, 0); 1, 0, 0);
+    -webkit-transform: matrix(1, -0.05, .2, 1, 0, 0);
   }
 }
 
