@@ -112,28 +112,28 @@ div.my-border {
 @-webkit-keyframes border {
   0% {
     -webkit-filter: hue-rotate(180deg);
-    transform: translateX(5em) translateY(1em) matrix(1, -0.05, -.2, 1, 0, 0);
-    -webkit-transform: translateX(5em) translateY(1em) matrix(1, -0.05, -.2, 1, 0, 0);
+    transform: matrix(1, -0.05, -.2, 1, 0, 0);
+    -webkit-transform: matrix(1, -0.05, -.2, 1, 0, 0);
   }
 
   100% {
     -webkit-filter: hue-rotate(0deg) saturate(1);
-    transform: translateX(5em) translateY(1em) matrix(1, -0.05, .2, 1, 0, 0);
-    -webkit-transform: translateX(5em) translateY(1em) matrix(1, -0.05, .2, 1, 0, 0);
+    transform: matrix(1, -0.05, .2, 1, 0, 0);
+    -webkit-transform: matrix(1, -0.05, .2, 1, 0, 0);
   }
 }
 
 @keyframes border {
   0% {
     -webkit-filter: hue-rotate(180deg);
-    transform: translateX(5em) translateY(1em) matrix(1, -0.05, .2, 1, 0, 0);
-    -webkit-transform: translateX(5em) translateY(1em) matrix(1, -0.05, .2, 1, 0, 0);
+    transform: matrix(1, -0.05, .2, 1, 0, 0);
+    -webkit-transform: matrix(1, -0.05, .2, 1, 0, 0);
   }
 
   100% {
     -webkit-filter: hue-rotate(0deg) saturate(1);
-    transform: translateX(5em) translateY(1em) matrix(1, -0.05, .2, 1, 0, 0);
-    -webkit-transform: translateX(5em) translateY(1em) matrix(1, -0.05, .2, 1, 0, 0); 1, 0, 0);
+    transform: matrix(1, -0.05, .2, 1, 0, 0);
+    -webkit-transform: matrix(1, -0.05, .2, 1, 0, 0); 1, 0, 0);
   }
 }
 
