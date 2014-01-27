@@ -11,6 +11,8 @@ $(document).ready(function(){
   }
 
   $('.your-video').hide()
+  $('video').hide()
+  $('.my-border').hide()
 
   $('button.click').on('click', $('form.your-name'), function(event) {
 
@@ -22,6 +24,8 @@ $(document).ready(function(){
         var video = document.querySelector('video');
         video.src = window.URL.createObjectURL(localMediaStream);
         $('.your-video').show()
+        $('video').show()
+        $('.my-border').show()
         // video.onloadedmetadata = function(e) {
         //   // fun stuff to come
         // }

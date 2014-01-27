@@ -6,6 +6,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
+  margin: 0;
 }
 
 li {
@@ -22,24 +23,63 @@ h1 {
 }
 
 video {
-  filter: grayscale(1);
-  -webkit-filter: hue-rotate(180deg );
-  /*-webkit-filter: saturate(1);*/
+  animation-duration: 4s;
+  animation-name: mirror;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  -webkit-animation-duration: 4s;
+  -webkit-animation-name: mirror;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
   width: 640px;
   height: 480px;
   background: rgba(255,255,255,0.5);
-/*  think need compass/SASS for this to work
-  filter: grayscale(1);*/
   overflow: hidden;
   z-index: 3;
   position: absolute;
   margin-top: 1em;
   margin-left: 1em;
-  transform: translateX(5em) translateY(1em) matrix(-1, -0.05, .2, 1, 0, 0);
-  -webkit-transform: translateX(5em) translateY(1em) matrix(-1, -0.05, .2, 1, 0, 0);
+}
+
+@-webkit-keyframes mirror {
+  0% {
+    -webkit-filter: brightness(4) contrast(3) hue-rotate(180deg) saturate(5);
+    transform: matrix(-1, -0.05, .2, 1, 0, 0);
+    -webkit-transform: matrix(-1, -0.05, .2, 1, 0, 0);
+  }
+
+  100% {
+    -webkit-filter: brightness(5) contrast(1) hue-rotate(0deg) saturate(1);
+    transform: matrix(-1, -0.05, -.2, 1, 0, 0);
+    -webkit-transform: matrix(-1, -0.05, -.2, 1, 0, 0);
+  }
+}
+
+@keyframes mirror {
+  0% {
+    filter: grayscale(1);
+    filter: hue-rotate(0deg);
+    transform: matrix(-1, -0.05, .2, 1, 0, 0);
+    -webkit-transform: matrix(-1, -0.05, .2, 1, 0, 0);
+  }
+
+  100% {
+    filter: grayscale(0);
+    filter: hue-rotate(280deg);
+    transform: matrix(-1, -0.05, -.2, 1, 0, 0);
+    -webkit-transform: matrix(-1, -0.05, -.2, 1, 0, 0);
+  }
 }
 
 div.your-video {
+  animation-duration: 4s;
+  animation-name: mirror;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  -webkit-animation-duration: 4s;
+  -webkit-animation-name: mirror;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
   position: absolute;
   width: 640px;
   height: 480px;
@@ -48,11 +88,17 @@ div.your-video {
   border-radius: 2em;
   overflow: hidden;
   z-index: 10;
-  transform: translateX(5em) translateY(1em) matrix(-1, -0.05, .2, 1, 0, 0);
-  -webkit-transform: translateX(5em) translateY(1em) matrix(-1, -0.05, .2, 1, 0, 0);
 }
 
 div.my-border {
+  animation-duration: 4.4s;
+  animation-name: border;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  -webkit-animation-duration: 4.4s;
+  -webkit-animation-name: border;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
   position: absolute;
   width: 640px;
   height: 480px;
@@ -61,8 +107,34 @@ div.my-border {
   border-radius: 2em;
   overflow: hidden;
   z-index: 0;
-  transform: translateX(5em) translateY(1em) matrix(1, -0.05, -.2, 1, 0, 0);
-  -webkit-transform: translateX(5em) translateY(1em) matrix(1, -0.05, -.2, 1, 0, 0);
+}
+
+@-webkit-keyframes border {
+  0% {
+    -webkit-filter: hue-rotate(180deg);
+    transform: matrix(1, -0.05, -.2, 1, 0, 0);
+    -webkit-transform: matrix(1, -0.05, -.2, 1, 0, 0);
+  }
+
+  100% {
+    -webkit-filter: hue-rotate(0deg) saturate(1);
+    transform: matrix(1, -0.05, .2, 1, 0, 0);
+    -webkit-transform: matrix(1, -0.05, .2, 1, 0, 0);
+  }
+}
+
+@keyframes border {
+  0% {
+    -webkit-filter: hue-rotate(180deg);
+    transform: matrix(1, -0.05, .2, 1, 0, 0);
+    -webkit-transform: matrix(1, -0.05, .2, 1, 0, 0);
+  }
+
+  100% {
+    -webkit-filter: hue-rotate(0deg) saturate(1);
+    transform: matrix(1, -0.05, .2, 1, 0, 0);
+    -webkit-transform: matrix(1, -0.05, .2, 1, 0, 0); 1, 0, 0);
+  }
 }
 
 p {
@@ -93,9 +165,8 @@ button:hover {
 }
 
 div.container {
-  position: absolute;
-  width: 800px;
-  height: 700px;
+  box-sizing: border-box;
+  height: 500px;
   padding-left: 10%;
   padding-right: 10%;
   margin-top: 3%;
