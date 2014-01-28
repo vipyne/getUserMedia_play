@@ -147,6 +147,7 @@ div.name {
   }
 
   50% {
+    -webkit-transition-timing-function: cubic-bezier(0.42,0,0.58,1);
     -webkit-transform: translateX(0em);
   }
 
@@ -162,6 +163,7 @@ div.name {
   }
 
   50% {
+    transition-timing-function: cubic-bezier(0.42,0,0.58,1);
     transform: translateX(0em);
   }
 
