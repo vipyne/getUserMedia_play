@@ -17,7 +17,7 @@ $(document).ready(function(){
   $('button.click').on('click', $('form.your-name'), function(event) {
 
     $('button.click').remove()
-    $('input').remove()
+    $('input').hide()
 
     if (navigator.getUserMedia) {
       navigator.getUserMedia({video: true}, function(localMediaStream) {
@@ -26,9 +26,12 @@ $(document).ready(function(){
         $('.your-video').show()
         $('video').show()
         $('.my-border').show()
-        // video.onloadedmetadata = function(e) {
-        //   // fun stuff to come
-        // }
+        var source = $('#your-name').html()
+        var template = Handlebars.compile(source)
+        var data = {
+          name: $('input.wtf').val()
+        }
+        $('.name').append(template(data))
         }, errorCallback)
     } else {
       document.write("sorry, you don't gots a camera")
