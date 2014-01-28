@@ -43,13 +43,13 @@ video {
 
 @-webkit-keyframes mirror {
   0% {
-    -webkit-filter: brightness(4) contrast(3) hue-rotate(180deg) saturate(5);
+    -webkit-filter: brightness(4) contrast(2) hue-rotate(180deg) saturate(2);
     -webkit-transform: matrix(-1, -0.05, .2, 1, 0, 0);
   }
 
   100% {
-    -webkit-filter: brightness(5) contrast(1) hue-rotate(0deg) saturate(1);
-    -webkit-transform: matrix(-1, -0.05, -.2, 1, 0, 0);
+    -webkit-filter: brightness(3) contrast(1) hue-rotate(0deg) saturate(1);
+    -webkit-transform: matrix(-1, 0.05, -.2, 1, 0, 0);
   }
 }
 
@@ -63,7 +63,7 @@ video {
   100% {
     filter: grayscale(0);
     filter: hue-rotate(280deg);
-    transform: matrix(-1, -0.05, -.2, 1, 0, 0);
+    transform: matrix(-1, 0.05, -.2, 1, 0, 0);
   }
 }
 
@@ -129,8 +129,53 @@ div.my-border {
   }
 }
 
-p {
+div.name {
+  animation-duration: 9s;
+  animation-name: hi;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  -webkit-animation-duration: 9s;
+  -webkit-animation-name: hi;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  font-size: 172px;
   position: absolute;
+  color: red;
+  z-index: 15;
+  font-variant: small-caps;
+  font-weight: bolder;
+}
+
+@-webkit-keyframes hi {
+  0% {
+    -webkit-filter: hue-rotate(280deg);
+    -webkit-transform: translateX(-10em);
+  }
+
+  50% {
+    -webkit-transform: translateX(0em);
+  }
+
+  100% {
+    -webkit-filter: hue-rotate(0deg);
+    -webkit-transform: translateX(10em);
+  }
+}
+
+@keyframes hi {
+  0% {
+    filter: hue-rotate(280deg);
+    transform: translateX(-10em);
+  }
+
+  50% {
+    transform: translateX(0em);
+  }
+
+  100% {
+    filter: hue-rotate(0deg);
+    transform: translateX(10em);
+  }
 }
 
 ul {
@@ -154,11 +199,17 @@ input {
 
 button:hover {
   cursor: pointer;
+  background-color: grey;
+}
+
+button:active {
+  cursor: pointer;
+  background-color: red;
 }
 
 div.container {
   box-sizing: border-box;
-  height: 500px;
+  height: 600px;
   padding-left: 10%;
   padding-right: 10%;
   margin-top: 3%;
