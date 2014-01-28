@@ -3,6 +3,9 @@
   <ul>
     <li>
       <button class="github">github streak</button>
+      <% @bam.each do |hash|%>
+      <p><%= hash["avatar_url"]%></p>
+      <% end %>
     </li>
     <li>
       <form class="your-name">
