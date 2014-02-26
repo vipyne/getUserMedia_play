@@ -26,6 +26,7 @@ $(document).ready(function(){
         $('.your-video').show()
         $('video').show()
         $('.my-border').show()
+        asciiInit()
         var source = $('#your-name').html()
         var template = Handlebars.compile(source)
         var data = {
