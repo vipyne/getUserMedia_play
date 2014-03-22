@@ -144,6 +144,7 @@ DEPENDENCIES
   dotenv-rails
   github_api
   jquery-rails
+  nokogiri
   pg
   rails (= 3.2.15)
   sass-rails (~> 3.2.3)
