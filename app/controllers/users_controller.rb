@@ -1,9 +1,9 @@
 class UsersController <ApplicationController
+  require 'open-uri'
 
   def index
-    # github = Github.new login:'vipyne', password: ENV["GITHUB_PASSWORD"]
-    # @bam = github.repos.commits.all  'vipyne', 'getVoteText_play'
-    # @bam = github.activity.events.issue  'vipyne', 'getUserMedia_play'
+    github_page = Nokogiri::HTML(open("https://github.com/vipyne"))
+    @streak = github_page.css('span.num')[2].text
   end
 
 end

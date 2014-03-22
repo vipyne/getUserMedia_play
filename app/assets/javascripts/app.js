@@ -8,7 +8,6 @@ $(document).ready(function(){
 
   var errorCallback = function(e) {
     console.log('you said no. bummer.', e)
-    self.location=”//www.youtube.com/watch?v=f5KyMNDJE6o”;
   }
 
   $('.your-video').hide()

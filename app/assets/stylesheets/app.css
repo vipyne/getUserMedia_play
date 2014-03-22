@@ -22,6 +22,12 @@ h1 {
   margin-left: 1em;
 }
 
+h2 {
+  float: right;
+  font-size: 5px;
+  margin-top: -30px;
+}
+
 video {
   animation-duration: 4s;
   animation-name: mirror;
