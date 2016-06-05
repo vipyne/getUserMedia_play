@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GetUserMedia</title>
+  <link rel="stylesheet" type="text/css" href="./app.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0-rc1/jquery.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r61/three.min.js"></script>
+  <script src="./app.js"></script>
+
+  <meta name="viewport" content="width=device-width">
+</head>
+<header>
+  <nav>
+    <h1>fUnHoUsE mIrRoR</h1>
+  </nav>
+</header>
+<body>
+<div class="container">
+
+  <ul>
+
+    <li>
+      <form class="your-name">
+        <input autofocus class="wtf" type="text" placeholder=" your name">
+      </form>
+    </li>
+    <li>
+      <button class="click">see yourself</button>
+    </li>
+    <li>
+      <div class="name">
+      </div>
+    </li>
+    <li>
+      <div class="your-video">
+      </div>
+      <video autoplay></video>
+      <div class="my-border">
+      </div>
+    </li>
+  </ul>
+
+</div>
+
+<script id="your-name" type="text/x-handlebars-template">
+hi {{name}}!
+</script>
+
+
+
+</body>
+</html>
