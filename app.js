@@ -42,12 +42,7 @@ $(document).ready(function(){
         $('video').show()
         $('.my-border').show()
         // asciiInit()
-        var source = $('#your-name').html()
-        var template = Handlebars.compile(source)
-        var data = {
-          name: $('input.wtf').val()
-        }
-        $('.name').append(template(data))
+        $('.name').append('hi ' + $('.input-name').val() + '!')
         }, errorCallback)
     } else {
       document.write("sorry, you don't gots a camera")
