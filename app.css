@@ -1,0 +1,221 @@
+html {
+  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+}
+
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+li {
+  list-style: none;
+}
+
+nav {
+  position: relative;
+  height: 25px;
+}
+
+h1 {
+  margin-left: 1em;
+}
+
+h2 {
+  float: right;
+  font-size: 5px;
+  margin-top: -30px;
+}
+
+video {
+  animation-duration: 4s;
+  animation-name: mirror;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  -webkit-animation-duration: 4s;
+  -webkit-animation-name: mirror;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  width: 640px;
+  height: 480px;
+  background: rgba(255,255,255,0.5);
+  overflow: hidden;
+  z-index: 3;
+  position: absolute;
+  margin-top: 1em;
+  margin-left: 1em;
+}
+
+@-webkit-keyframes mirror {
+  0% {
+    -webkit-filter: brightness(4) contrast(2) hue-rotate(180deg) saturate(2);
+    -webkit-transform: matrix(-1, -0.05, .2, 1, 0, 0);
+  }
+
+  100% {
+    -webkit-filter: brightness(3) contrast(1) hue-rotate(0deg) saturate(1);
+    -webkit-transform: matrix(-1, 0.05, -.2, 1, 0, 0);
+  }
+}
+
+@keyframes mirror {
+  0% {
+    transform: matrix(-1, -0.05, .2, 1, 0, 0);
+  }
+
+  100% {
+    transform: matrix(-1, 0.05, -.2, 1, 0, 0);
+  }
+}
+
+div.your-video {
+  animation-duration: 4s;
+  animation-name: mirror;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  -webkit-animation-duration: 4s;
+  -webkit-animation-name: mirror;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  position: absolute;
+  width: 640px;
+  height: 480px;
+  border: 1em solid gold;
+  -webkit-border-radius: 2em;
+  border-radius: 2em;
+  overflow: hidden;
+  z-index: 10;
+}
+
+div.my-border {
+  animation-duration: 4.4s;
+  animation-name: border;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  -webkit-animation-duration: 4.4s;
+  -webkit-animation-name: border;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  position: absolute;
+  width: 640px;
+  height: 480px;
+  border: 1em solid pink;
+  -webkit-border-radius: 2em;
+  border-radius: 2em;
+  overflow: hidden;
+  z-index: 0;
+}
+
+@-webkit-keyframes border {
+  0% {
+    -webkit-filter: hue-rotate(180deg);
+    -webkit-transform: matrix(1, -0.05, -.2, 1, 0, 0);
+  }
+
+  100% {
+    -webkit-filter: hue-rotate(0deg) saturate(1);
+    -webkit-transform: matrix(1, -0.05, .2, 1, 0, 0);
+  }
+}
+
+@keyframes border {
+  0% {
+    transform: matrix(1, -0.05, .2, 1, 0, 0);
+  }
+
+  100% {
+    transform: matrix(1, -0.05, .2, 1, 0, 0);
+  }
+}
+
+div.name {
+  animation-duration: 9s;
+  animation-name: hi;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  -webkit-animation-duration: 9s;
+  -webkit-animation-name: hi;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  font-size: 172px;
+  position: absolute;
+  color: red;
+  z-index: 15;
+  font-variant: small-caps;
+  font-weight: bolder;
+}
+
+@-webkit-keyframes hi {
+  0% {
+    -webkit-filter: hue-rotate(280deg);
+    -webkit-transform: translateX(-10em);
+  }
+
+  50% {
+    -webkit-transition-timing-function: cubic-bezier(0.42,0,0.58,1);
+    -webkit-transform: translateX(0em);
+  }
+
+  100% {
+    -webkit-filter: hue-rotate(0deg);
+    -webkit-transform: translateX(10em);
+  }
+}
+
+@keyframes hi {
+  0% {
+    transform: translateX(-10em);
+  }
+
+  50% {
+    transition-timing-function: cubic-bezier(0.42,0,0.58,1);
+    transform: translateX(0em);
+  }
+
+  100% {
+    transform: translateX(10em);
+  }
+}
+
+ul {
+  position: absolute;
+  width: 70%;
+  height: 100%;
+  padding: 1em;
+}
+
+input,
+button {
+  border: .1em solid;
+  border-radius: 1em;
+  outline: none;
+  background-color: white;
+}
+
+input {
+  padding: .25em;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: grey;
+}
+
+button:active {
+  cursor: pointer;
+  background-color: red;
+}
+
+div.container {
+  box-sizing: border-box;
+  height: 600px;
+  padding-left: 10%;
+  padding-right: 10%;
+  margin-top: 3%;
+  margin-bottom: 10%;
+  margin-right: 10%;
+  margin-left: 10%;
+  border: .1em solid;
+  border-radius: 2em;
+}
