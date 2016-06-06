@@ -1,5 +1,5 @@
-playvideo.herokuapp.com
-=======================
+vipyne.github.io/getUserMedia_play/
+===================================
 
 experimental css3.  a totally absurd just for fun page.
 
