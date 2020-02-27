@@ -3,9 +3,6 @@
 <head>
   <title>GetUserMedia</title>
   <link rel="stylesheet" type="text/css" href="./app.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0-rc1/jquery.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r61/three.min.js"></script>
-  <script src="./app.js"></script>
 
   <meta name="viewport" content="width=device-width">
 </head>
@@ -18,25 +15,28 @@
   <div class="container">
     <ul>
       <li>
-        <form class="your-name">
-          <input autofocus class="input-name" type="text" placeholder=" your name">
+        <form id="your-name">
+          <input autofocus id="input-name" type="text" placeholder=" your name">
         </form>
       </li>
       <li>
-        <button class="click">see yourself</button>
+        <button id="click">see yourself</button>
       </li>
       <li>
-        <div class="name">
+        <div id="name">
         </div>
       </li>
-      <li>
-        <div class="your-video">
+      <li id="li-video">
+        <div id="your-video">
         </div>
-        <video autoplay></video>
-        <div class="my-border">
+        <video id="video"  autoplay></video>
+        <canvas id="canvas"  width="640" height="480"></canvas>
+        <div id="my-border">
         </div>
       </li>
     </ul>
   </div>
+  <script src="./app.js"></script>
+
 </body>
 </html>

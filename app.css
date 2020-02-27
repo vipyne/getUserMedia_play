@@ -28,7 +28,7 @@ h2 {
   margin-top: -30px;
 }
 
-video {
+.mirror-animation {
   animation-duration: 4s;
   animation-name: mirror;
   animation-iteration-count: infinite;
@@ -37,14 +37,17 @@ video {
   -webkit-animation-name: mirror;
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-direction: alternate;
+  margin-top: 1em;
+  margin-left: 1em;
+}
+
+video {
   width: 640px;
   height: 480px;
   background: rgba(255,255,255,0.5);
   overflow: hidden;
-  z-index: 3;
   position: absolute;
-  margin-top: 1em;
-  margin-left: 1em;
+  z-index: 100;
 }
 
 @-webkit-keyframes mirror {
@@ -69,7 +72,7 @@ video {
   }
 }
 
-div.your-video {
+#your-video {
   animation-duration: 4s;
   animation-name: mirror;
   animation-iteration-count: infinite;
@@ -88,7 +91,7 @@ div.your-video {
   z-index: 10;
 }
 
-div.my-border {
+#my-border {
   animation-duration: 4.4s;
   animation-name: border;
   animation-iteration-count: infinite;
@@ -129,7 +132,7 @@ div.my-border {
   }
 }
 
-div.name {
+#name {
   animation-duration: 9s;
   animation-name: hi;
   animation-iteration-count: infinite;
@@ -140,8 +143,8 @@ div.name {
   -webkit-animation-direction: alternate;
   font-size: 172px;
   position: absolute;
-  color: red;
-  z-index: 15;
+  color: #3cdec3;
+  z-index: 200;
   font-variant: small-caps;
   font-weight: bolder;
 }
@@ -218,4 +221,14 @@ div.container {
   margin-left: 10%;
   border: .1em solid;
   border-radius: 2em;
+}
+
+#li-video {
+  position: relative;
+}
+
+#canvas {
+  position: absolute;
+  z-index: 150;
+
 }
