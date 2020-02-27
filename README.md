@@ -1,6 +1,7 @@
 vipyne.github.io/getUserMedia_play/
 ===================================
+#### 2016:
+experimental css3.  a totally absurd just for fun page
 
-experimental css3.  a totally absurd just for fun page.
-
-TODO: really want to get THREE.AsciiEffect filter to work.
+#### 2020:
+experimental video|canvas stuff.  a totally absurd just for fun page
