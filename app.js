@@ -1,6 +1,18 @@
 ;(function(){
 /////////////////////////////
 
+  // TODO: something cool with wasm
+  // https://dassur.ma/things/c-to-webassembly/ | https://dassur.ma/things/raw-wasm/
+  async function run() {
+    const {instance} = await WebAssembly.instantiateStreaming(
+      fetch("./somethingcool.wasm")
+    );
+    const r = instance.exports.somethingcool('arg1', 'arg2');
+    console.log(r);
+  }
+  // run();
+
+
   navigator.getUserMedia = navigator.getUserMedia ||
   navigator.webkitGetUserMedia ||
   navigator.mozGetUserMedia ||
@@ -34,27 +46,28 @@
   form.focus();
   livideo.classList.add('mirror-animation');
 
+  // TODO: use webworker for this?
   // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Manipulating_video_using_canvas
   function videoToCanvas(video, canvas) {
     let ctx = canvas.getContext('2d');
     ctx.drawImage(video, 0, 0, 640, 480);
     let frame = ctx.getImageData(0, 0, 640, 480);
-    let l = frame.data.length / 4;
+    let l = frame.data.length;
 
-    for (let i = 0; i < l; i++) {
-      let r = frame.data[i * 4 + 0];
-      let g = frame.data[i * 4 + 1];
-      let b = frame.data[i * 4 + 2];
-      let a = frame.data[i * 4 + 3];
-      frame.data[i * 4 + 3] = 255/2; // semi transparent
+    for (let i = 0; i < l; i+=4) {
+      let r = frame.data[i + 0];
+      let g = frame.data[i + 1];
+      let b = frame.data[i + 2];
+      let a = frame.data[i + 3];
+      frame.data[i + 3] = 255/2; // semi transparent
       if (r < 100 || g > 200) {
-        frame.data[i * 4 + 2] = 255;
+        frame.data[i + 2] = 255;
       }
       if (g < 100 || b > 200) {
-        frame.data[i * 4 + 0] = 255;
+        frame.data[i + 0] = 255;
       }
       if (b < 100 || r > 200) {
-        frame.data[i * 4 + 1] = 255;
+        frame.data[i + 1] = 255;
       }
     }
     ctx.putImageData(frame, 0, 0);
