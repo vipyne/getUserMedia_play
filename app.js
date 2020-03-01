@@ -1,16 +1,86 @@
 ;(function(){
 /////////////////////////////
-
   // TODO: something cool with wasm
   // https://dassur.ma/things/c-to-webassembly/ | https://dassur.ma/things/raw-wasm/
-  async function run() {
-    const {instance} = await WebAssembly.instantiateStreaming(
-      fetch("./somethingcool.wasm")
-    );
-    const r = instance.exports.somethingcool('arg1', 'arg2');
-    console.log(r);
+  async function runWASM() {
+    //// TODO: finish understanding the config/imports object
+    /*
+      let buffer;
+      const config = {
+        env: {
+          memory_base: 0,
+          table_base: 0,
+          memory : new WebAssembly.Memory({ initial: 256 }),
+          table: new WebAssembly.Table({
+            initial: 0,
+            element: 'anyfunc',
+          }),
+          printf: index => {
+            let s = "";
+            while(true) {
+              if(buffer[index] !== 0){
+                s += String.fromCharCode(buffer[index]);
+                index++;
+              } else {
+                console.log(s);
+                return;
+              }
+            }
+          }
+        }
+      };
+      fetch('./narf.wasm')
+        .then(response =>{
+          return response.arrayBuffer();
+        })
+        .then(bytes => {
+          return WebAssembly.instantiate(bytes, config);
+        })
+        .then(results => {
+          let { main } =  results.instance.exports;
+          buffer = new Uint8Array(results.instance.exports.memory.buffer);
+          main();
+        });
+    */
+
+    //// you can't stop trying to make it happen
+    fetch('./narf.wasm').then(response =>
+      response.arrayBuffer()
+    ).then(bytes =>
+      WebAssembly.instantiate(bytes)
+      //// resolves to obj
+      // {
+      //   module: WebAssembly.Module, // ccall & cwrap
+      //   instance: WebAssembly.Instance
+      // }
+    ).then(( {instance, module} ) => {
+      // when compiled STANDALONE_WASM with `emcc`, instance.exports ==
+      // memory: Memory {}
+      // _start: ƒ 0()
+
+      // when compiled with `clang|llc|wasm-ld`, instance.exports ==
+      // memory: Memory {}
+      // narf: ƒ 1() <---------- this is the function in the .c file
+      // __wasm_call_ctors: ƒ 0()
+      // __dso_handle: Global {}
+      // __data_end: Global {}
+      // __global_base: Global {}
+      // __heap_base: Global {}
+      console.log("_____instance.exports ", instance.exports);
+
+      const fromC = instance.exports.narf(4);
+      console.log("from c", fromC);
+      const blob = new Blob([fromC], { type: 'plain/text' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'texttest-' + Date.now() + '.txt';
+      document.body.appendChild(a);
+      a.click();
+    });
   }
-  // run();
+  runWASM();
+
 
 
   navigator.getUserMedia = navigator.getUserMedia ||
