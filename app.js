@@ -43,22 +43,67 @@
         });
     */
 
+    // let buffer;
+    const config = {
+      env: {
+        memory_base: 0,
+        __memory_base: 0,
+        table_base: 0,
+        memory : new WebAssembly.Memory({ initial: 1024 }),
+        table: new WebAssembly.Table({
+          initial: 0,
+          element: 'anyfunc',
+        }),
+        puts: () => {
+
+        },
+        printf: index => {
+          // let s = "";
+          // while(true) {
+          //   if(buffer[index] !== 0){
+          //     s += String.fromCharCode(buffer[index]);
+          //     index++;
+          //   } else {
+          //     console.log(s);
+          //     return;
+          //   }
+          // }
+        },
+        narf: () => {
+
+        // },
+        // __memory_base: () => {
+
+        }
+      }
+    };
+
     //// you can't stop trying to make it happen
     fetch('./narf.wasm').then(response =>
       response.arrayBuffer()
     ).then(bytes =>
-      WebAssembly.instantiate(bytes)
+      // WebAssembly.instantiate(bytes, {env: {puts: ()=>{}, __memory_base: 0, memory : new WebAssembly.Memory({ initial: 256 })}})
+      WebAssembly.instantiate(bytes, config)
       //// resolves to obj
       // {
+      // https://emscripten.org/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html#calling-compiled-c-functions-from-javascript-using-ccall-cwrap
       //   module: WebAssembly.Module, // ccall & cwrap
       //   instance: WebAssembly.Instance
       // }
     ).then(( {instance, module} ) => {
-      // when compiled STANDALONE_WASM with `emcc`, instance.exports ==
-      // memory: Memory {}
-      // _start: ƒ 0()
+      // https://v8.dev/blog/emscripten-standalone-wasm
 
-      // when compiled with `clang|llc|wasm-ld`, instance.exports ==
+      console.log("_____instance.exports ", instance.exports);
+      console.log("_____module ", module);
+      // when compiled STANDALONE_WASM with `emcc`,
+      // instance.exports ===
+      // memory: Memory {}
+      // narf: ƒ 1() <---------- this is the function in the .c file (with EMSCRIPTEN_KEEPALIVE)
+      // _start: ƒ 0()
+      // module ===
+
+      // when compiled with `clang | llc | wasm-ld`,
+      // instance.exports ===
       // memory: Memory {}
       // narf: ƒ 1() <---------- this is the function in the .c file
       // __wasm_call_ctors: ƒ 0()
@@ -66,9 +111,22 @@
       // __data_end: Global {}
       // __global_base: Global {}
       // __heap_base: Global {}
-      console.log("_____instance.exports ", instance.exports);
+      // module ===
+      // module: Module {} // imports, exports, customSections
 
-      const fromC = instance.exports.narf(4);
+      // const mem = new Int32Array(instance.exports.memory.buffer);
+      // console.log(mem[0], mem[1]);
+      // mem[0] = 40;
+      // console.log(mem[0], mem[1]);
+      // instance.exports.narf();
+      // console.log(mem[0], mem[1]);
+
+      // https://agniva.me/wasm/2018/05/17/wasm-hard-way.html
+      // https://dev.to/azure/passing-structured-data-from-c-to-javascript-in-web-assembly-1i0p
+      // https://ariya.io/2019/05/basics-of-memory-access-in-webassembly
+      // TODO: look at https://github.com/zeux/meshoptimizer/blob/bdc3006532dd29b03d83dc819e5fa7683815b88e/js/meshopt_decoder.js
+
+      const fromC = instance.exports.narf();
       console.log("from c", fromC);
       const blob = new Blob([fromC], { type: 'plain/text' });
       const url = window.URL.createObjectURL(blob);
@@ -76,7 +134,7 @@
       a.href = url;
       a.download = 'texttest-' + Date.now() + '.txt';
       document.body.appendChild(a);
-      a.click();
+      // a.click();
     });
   }
   runWASM();
@@ -88,15 +146,15 @@
   navigator.mozGetUserMedia ||
   navigator.msGetUserMedia;
 
-  const vid1 = document.getElementById('your-video');
-  const video = document.querySelector('video');
+  const inputName = document.getElementById('input-name');
+  const livideo = document.getElementById('li-video');
+  const button = document.getElementById('click');
   const canvas = document.querySelector('canvas');
+  const video = document.querySelector('video');
+  const vid1 = document.getElementById('your-video');
+  const form = document.getElementById('your-name');
   const vid3 = document.getElementById('my-border');
   const name = document.getElementById('name');
-  const inputName = document.getElementById('input-name');
-  const form = document.getElementById('your-name');
-  const button = document.getElementById('click');
-  const livideo = document.getElementById('li-video');
   let interval = 0;
 
   form.addEventListener('submit', (event) => {
