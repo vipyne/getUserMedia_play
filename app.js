@@ -91,11 +91,22 @@
   runWASM();
 
 
+  /*
+  1. file select gif
+  2. copy file into wasm memory
+  3. write file back (unchanged)
+  4. download file
+  5. add comment to file
+  6. write original gif (record from video/canvas??) & add comment
+  */
 
   navigator.getUserMedia = navigator.getUserMedia ||
   navigator.webkitGetUserMedia ||
   navigator.mozGetUserMedia ||
   navigator.msGetUserMedia;
+
+  const selectedFile = document.getElementById('input-gif').files[0];
+  // const inputGif = document.getElementById('input-gif');
 
   const inputName = document.getElementById('input-name');
   const livideo = document.getElementById('li-video');
