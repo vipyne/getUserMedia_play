@@ -3,50 +3,7 @@
   // TODO: something cool with wasm
   // https://dassur.ma/things/c-to-webassembly/ | https://dassur.ma/things/raw-wasm/
   async function runWASM() {
-    //// TODO: finish understanding the config/imports object
-    /*
-      let buffer;
-      const config = {
-        env: {
-          memory_base: 0,
-          table_base: 0,
-          memory : new WebAssembly.Memory({ initial: 256 }),
-          table: new WebAssembly.Table({
-            initial: 0,
-            element: 'anyfunc',
-          }),
-          printf: index => {
-            let s = "";
-            while(true) {
-              if(buffer[index] !== 0){
-                s += String.fromCharCode(buffer[index]);
-                index++;
-              } else {
-                console.log(s);
-                return;
-              }
-            }
-          }
-        }
-      };
-      fetch('./narf.wasm')
-        .then(response =>{
-          return response.arrayBuffer();
-        })
-        .then(bytes => {
-          return WebAssembly.instantiate(bytes, config);
-        })
-        .then(results => {
-          let { main } =  results.instance.exports;
-          buffer = new Uint8Array(results.instance.exports.memory.buffer);
-          main();
-        });
-    */
-
-    // let buffer;
-
     // when "function import requires a callable", put func in `env` obj
-
     const config = {
       module: {},
       env: {
@@ -60,7 +17,7 @@
           initial: 0,
           element: 'anyfunc',
         }),
-        abort: ()=>{}
+        abort: function(){}
       },
       imports: {
         derp: arg => console.log("_____arg ", arg)
@@ -68,11 +25,9 @@
     };
 
     //// you can't stop trying to make it happen
-    // fetch('./giffy.wasm').then(response =>
-    fetch('./narf.wasm').then(response =>
+    fetch('./gify.wasm').then(response =>
       response.arrayBuffer()
     ).then(bytes =>
-      // WebAssembly.instantiate(bytes, {env: {puts: ()=>{}, __memory_base: 0, memory : new WebAssembly.Memory({ initial: 256 })}})
       WebAssembly.instantiate(bytes, config)
       //// resolves to obj
       // {
@@ -82,6 +37,11 @@
       // }
     ).then(( {instance, module} ) => {
       // https://v8.dev/blog/emscripten-standalone-wasm
+      // https://namekdev.net/2019/09/webassembly-cpp-and-webgl-for-js13k-game-jam/
+      // https://agniva.me/wasm/2018/05/17/wasm-hard-way.html
+      // https://dev.to/azure/passing-structured-data-from-c-to-javascript-in-web-assembly-1i0p
+      // https://ariya.io/2019/05/basics-of-memory-access-in-webassembly
+      // TODO: look at https://github.com/zeux/meshoptimizer/blob/bdc3006532dd29b03d83dc819e5fa7683815b88e/js/meshopt_decoder.js
 
       console.log("_____instance.exports ", instance.exports);
       console.log("_____module ", module);
@@ -104,40 +64,28 @@
       // module ===
       // module: Module {} // imports, exports, customSections
 
-      const mem = new Int32Array(instance.exports.memory.buffer);
+      // const mem = new Int32Array(instance.exports.memory.buffer);
       // const mem = new Int16Array(instance.exports.memory.buffer);
-      // const mem = new Int8Array(instance.exports.memory.buffer);
+      const mem = new Int8Array(instance.exports.memory.buffer);
 
       console.log(mem[0], mem[1]);
       console.log("_____mem.length ", mem.length) // 2 ^15 w clang - 2 ^22 w emcc
       for (let i = 0; i < mem.length; i++) {
-        if (0 !== mem[i]) console.log('1 not zero', i, mem[i])
-        mem[i] = 0;
+        if (0 !== mem[i]) console.log('not zero in mem: ', i, mem[i])
       }
-      mem[0] = 60;
-      console.log(mem[0], mem[1], mem[9], mem[10], mem[11]);
-      const nar = instance.exports.narf();
-      console.log("_____nar ", nar)
-      console.log(mem[1023], mem[1024], mem[1025]);
-
-      // https://namekdev.net/2019/09/webassembly-cpp-and-webgl-for-js13k-game-jam/
-      // https://agniva.me/wasm/2018/05/17/wasm-hard-way.html
-      // https://dev.to/azure/passing-structured-data-from-c-to-javascript-in-web-assembly-1i0p
-      // https://ariya.io/2019/05/basics-of-memory-access-in-webassembly
-      // TODO: look at https://github.com/zeux/meshoptimizer/blob/bdc3006532dd29b03d83dc819e5fa7683815b88e/js/meshopt_decoder.js
-
-      const fromC = instance.exports.narf();
-      console.log("from c", fromC);
-      for (let i = 0; i < mem.length; i++) {
-        if (0 !== mem[i]) console.log('2 not zero', i, mem[i])
-      }
-      const blob = new Blob([fromC], { type: 'plain/text' });
+      const blob = new Blob([
+        String.fromCharCode(mem[1024]),
+        String.fromCharCode(mem[1025]),
+        String.fromCharCode(mem[1026]),
+        String.fromCharCode(mem[1027]),
+        String.fromCharCode(mem[1028]),
+        String.fromCharCode(mem[1029]) ], { type: 'application/octet-stream' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'texttest-' + Date.now() + '.txt';
+      a.download = 'binary-' + Date.now() + '.gif';
       document.body.appendChild(a);
-      // a.click();
+      a.click();
     });
   }
   runWASM();
