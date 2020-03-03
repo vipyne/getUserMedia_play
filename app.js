@@ -44,41 +44,31 @@
     */
 
     // let buffer;
+
+    // when "function import requires a callable", put func in `env` obj
+
     const config = {
+      module: {},
       env: {
+        wasi_snapshot_preview1: function(){},
+        puts: function(){},
         memory_base: 0,
         __memory_base: 0,
         table_base: 0,
-        memory : new WebAssembly.Memory({ initial: 1024 }),
+        memory : new WebAssembly.Memory({ initial: 1 }),
         table: new WebAssembly.Table({
           initial: 0,
           element: 'anyfunc',
         }),
-        puts: () => {
-
-        },
-        printf: index => {
-          // let s = "";
-          // while(true) {
-          //   if(buffer[index] !== 0){
-          //     s += String.fromCharCode(buffer[index]);
-          //     index++;
-          //   } else {
-          //     console.log(s);
-          //     return;
-          //   }
-          // }
-        },
-        narf: () => {
-
-        // },
-        // __memory_base: () => {
-
-        }
+        abort: ()=>{}
+      },
+      imports: {
+        derp: arg => console.log("_____arg ", arg)
       }
     };
 
     //// you can't stop trying to make it happen
+    // fetch('./giffy.wasm').then(response =>
     fetch('./narf.wasm').then(response =>
       response.arrayBuffer()
     ).then(bytes =>
@@ -114,13 +104,23 @@
       // module ===
       // module: Module {} // imports, exports, customSections
 
-      // const mem = new Int32Array(instance.exports.memory.buffer);
-      // console.log(mem[0], mem[1]);
-      // mem[0] = 40;
-      // console.log(mem[0], mem[1]);
-      // instance.exports.narf();
-      // console.log(mem[0], mem[1]);
+      const mem = new Int32Array(instance.exports.memory.buffer);
+      // const mem = new Int16Array(instance.exports.memory.buffer);
+      // const mem = new Int8Array(instance.exports.memory.buffer);
 
+      console.log(mem[0], mem[1]);
+      console.log("_____mem.length ", mem.length) // 2 ^15 w clang - 2 ^22 w emcc
+      for (let i = 0; i < mem.length; i++) {
+        if (0 !== mem[i]) console.log('1 not zero', i, mem[i])
+        mem[i] = 0;
+      }
+      mem[0] = 60;
+      console.log(mem[0], mem[1], mem[9], mem[10], mem[11]);
+      const nar = instance.exports.narf();
+      console.log("_____nar ", nar)
+      console.log(mem[1023], mem[1024], mem[1025]);
+
+      // https://namekdev.net/2019/09/webassembly-cpp-and-webgl-for-js13k-game-jam/
       // https://agniva.me/wasm/2018/05/17/wasm-hard-way.html
       // https://dev.to/azure/passing-structured-data-from-c-to-javascript-in-web-assembly-1i0p
       // https://ariya.io/2019/05/basics-of-memory-access-in-webassembly
@@ -128,6 +128,9 @@
 
       const fromC = instance.exports.narf();
       console.log("from c", fromC);
+      for (let i = 0; i < mem.length; i++) {
+        if (0 !== mem[i]) console.log('2 not zero', i, mem[i])
+      }
       const blob = new Blob([fromC], { type: 'plain/text' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
