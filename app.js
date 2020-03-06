@@ -2,7 +2,11 @@
 /////////////////////////////
   // TODO: something cool with wasm
   // https://dassur.ma/things/c-to-webassembly/ | https://dassur.ma/things/raw-wasm/
-  async function runWASM() {
+  async function runWASM(inputGif) {
+
+    console.log("_____inputGif ", inputGif)
+    inputGif.size // 2800124
+
     // when "function import requires a callable", put func in `env` obj
     const config = {
       module: {},
@@ -12,7 +16,7 @@
         memory_base: 0,
         __memory_base: 0,
         table_base: 0,
-        memory : new WebAssembly.Memory({ initial: 1 }),
+        memory : new WebAssembly.Memory({ initial: 256 }),
         table: new WebAssembly.Table({
           initial: 0,
           element: 'anyfunc',
@@ -25,7 +29,8 @@
     };
 
     //// you can't stop trying to make it happen
-    fetch('./gify.wasm').then(response =>
+    fetch('./giffy.wasm').then(response =>
+    // fetch('./gify.wasm').then(response =>
       response.arrayBuffer()
     ).then(bytes =>
       WebAssembly.instantiate(bytes, config)
@@ -68,6 +73,15 @@
       // const mem = new Int16Array(instance.exports.memory.buffer);
       const mem = new Int8Array(instance.exports.memory.buffer);
 
+      // mem.
+      // fr.readAsArrayBuffer(inputGif)
+      const fr = new FileReader()
+      const bites = fr.readAsArrayBuffer(inputGif);
+      console.log("_____bites ", bites)
+      mem.set(inputGif, 0, inputGif.length)
+
+      // const derp = instance.exports.copy_gif_file(inputGif, inputGif.size, mem);
+      // console.log("_____derp ", derp,)
       console.log(mem[0], mem[1]);
       console.log("_____mem.length ", mem.length) // 2 ^15 w clang - 2 ^22 w emcc
       for (let i = 0; i < mem.length; i++) {
@@ -85,10 +99,9 @@
       a.href = url;
       a.download = 'binary-' + Date.now() + '.gif';
       document.body.appendChild(a);
-      a.click();
+      // a.click();
     });
   }
-  runWASM();
 
 
   /*
@@ -105,8 +118,8 @@
   navigator.mozGetUserMedia ||
   navigator.msGetUserMedia;
 
-  const selectedFile = document.getElementById('input-gif').files[0];
-  // const inputGif = document.getElementById('input-gif');
+
+  const inputGif = document.getElementById('input-gif');
 
   const inputName = document.getElementById('input-name');
   const livideo = document.getElementById('li-video');
@@ -118,6 +131,13 @@
   const vid3 = document.getElementById('my-border');
   const name = document.getElementById('name');
   let interval = 0;
+
+  inputGif.addEventListener('change', (event) => {
+    // event.preventDefault();
+    // button.click();
+    const selectedFile = document.getElementById('input-gif').files[0];
+    runWASM(selectedFile);
+  }, false);
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
