@@ -1,3 +1,4 @@
+
 ;(function(){
 /////////////////////////////
   // TODO: something cool with wasm
@@ -5,7 +6,12 @@
   async function runWASM(inputGif) {
 
     console.log("_____inputGif ", inputGif)
-    inputGif.size // 2800124
+    // const ig = new Int32Array(inputGif)
+    // console.log("_____ig ", ig)
+    // const fr = new FileReader()
+    // const bites = fr.readAsArrayBuffer(inputGif);
+    // console.log("_____bites ", bites)
+    // inputGif.size // 2800124
 
     // when "function import requires a callable", put func in `env` obj
     const config = {
@@ -30,7 +36,6 @@
 
     //// you can't stop trying to make it happen
     fetch('./giffy.wasm').then(response =>
-    // fetch('./gify.wasm').then(response =>
       response.arrayBuffer()
     ).then(bytes =>
       WebAssembly.instantiate(bytes, config)
@@ -74,11 +79,11 @@
       const mem = new Int8Array(instance.exports.memory.buffer);
 
       // mem.
-      // fr.readAsArrayBuffer(inputGif)
-      const fr = new FileReader()
-      const bites = fr.readAsArrayBuffer(inputGif);
-      console.log("_____bites ", bites)
-      mem.set(inputGif, 0, inputGif.length)
+      // // fr.readAsArrayBuffer(inputGif)
+      // const fr = new FileReader()
+      // const bites = fr.readAsArrayBuffer(inputGif);
+      // console.log("_____bites ", bites)
+      // mem.set(inputGif, 0, inputGif.length)
 
       // const derp = instance.exports.copy_gif_file(inputGif, inputGif.size, mem);
       // console.log("_____derp ", derp,)
@@ -119,7 +124,7 @@
   navigator.msGetUserMedia;
 
 
-  const inputGif = document.getElementById('input-gif');
+  const inputGifSelector = document.getElementById('input-gif');
 
   const inputName = document.getElementById('input-name');
   const livideo = document.getElementById('li-video');
@@ -132,11 +137,12 @@
   const name = document.getElementById('name');
   let interval = 0;
 
-  inputGif.addEventListener('change', (event) => {
-    // event.preventDefault();
-    // button.click();
-    const selectedFile = document.getElementById('input-gif').files[0];
-    runWASM(selectedFile);
+  inputGifSelector.addEventListener('change', (event) => {
+    const inputGif = event.target.files[0];
+    inputGif.arrayBuffer().then((blob) => {
+      console.log("_____blob ", blob)
+      runWASM(blob);
+    })
   }, false);
 
   form.addEventListener('submit', (event) => {
