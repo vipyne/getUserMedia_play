@@ -4,15 +4,7 @@
   // TODO: something cool with wasm
   // https://dassur.ma/things/c-to-webassembly/ | https://dassur.ma/things/raw-wasm/
   async function runWASM(inputGif) {
-
     console.log("_____inputGif ", inputGif)
-    // const ig = new Int32Array(inputGif)
-    // console.log("_____ig ", ig)
-    // const fr = new FileReader()
-    // const bites = fr.readAsArrayBuffer(inputGif);
-    // console.log("_____bites ", bites)
-    // inputGif.size // 2800124
-
     // when "function import requires a callable", put func in `env` obj
     const config = {
       module: {},
@@ -22,7 +14,7 @@
         memory_base: 0,
         __memory_base: 0,
         table_base: 0,
-        memory : new WebAssembly.Memory({ initial: 256 }),
+        memory : new WebAssembly.Memory({ initial: 1 }),
         table: new WebAssembly.Table({
           initial: 0,
           element: 'anyfunc',
@@ -35,7 +27,7 @@
     };
 
     //// you can't stop trying to make it happen
-    fetch('./giffy.wasm').then(response =>
+    fetch('./gify.wasm').then(response =>
       response.arrayBuffer()
     ).then(bytes =>
       WebAssembly.instantiate(bytes, config)
@@ -58,14 +50,14 @@
       // when compiled STANDALONE_WASM with `emcc`,
       // instance.exports ===
       // memory: Memory {}
-      // narf: ƒ 1() <---------- this is the function in the .c file (with EMSCRIPTEN_KEEPALIVE)
+      // gif: ƒ 1() <---------- this is the function in the .c file (with EMSCRIPTEN_KEEPALIVE)
       // _start: ƒ 0()
       // module ===
 
       // when compiled with `clang | llc | wasm-ld`,
       // instance.exports ===
       // memory: Memory {}
-      // narf: ƒ 1() <---------- this is the function in the .c file
+      // gif: ƒ 1() <---------- this is the function in the .c file
       // __wasm_call_ctors: ƒ 0()
       // __dso_handle: Global {}
       // __data_end: Global {}
@@ -78,15 +70,6 @@
       // const mem = new Int16Array(instance.exports.memory.buffer);
       const mem = new Int8Array(instance.exports.memory.buffer);
 
-      // mem.
-      // // fr.readAsArrayBuffer(inputGif)
-      // const fr = new FileReader()
-      // const bites = fr.readAsArrayBuffer(inputGif);
-      // console.log("_____bites ", bites)
-      // mem.set(inputGif, 0, inputGif.length)
-
-      // const derp = instance.exports.copy_gif_file(inputGif, inputGif.size, mem);
-      // console.log("_____derp ", derp,)
       console.log(mem[0], mem[1]);
       console.log("_____mem.length ", mem.length) // 2 ^15 w clang - 2 ^22 w emcc
       for (let i = 0; i < mem.length; i++) {
@@ -98,13 +81,17 @@
         String.fromCharCode(mem[1026]),
         String.fromCharCode(mem[1027]),
         String.fromCharCode(mem[1028]),
-        String.fromCharCode(mem[1029]) ], { type: 'application/octet-stream' });
+        String.fromCharCode(mem[1029]),
+        mem[1030], // ugg TODO read these bits right (hex chars from c)
+        mem[1032],
+        mem[1034]
+      ], { type: 'application/octet-stream' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = 'binary-' + Date.now() + '.gif';
       document.body.appendChild(a);
-      // a.click();
+      a.click();
     });
   }
 
@@ -144,6 +131,8 @@
       runWASM(blob);
     })
   }, false);
+
+  runWASM();
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
