@@ -68,23 +68,37 @@
 
       // const mem = new Int32Array(instance.exports.memory.buffer);
       // const mem = new Int16Array(instance.exports.memory.buffer);
-      const mem = new Int8Array(instance.exports.memory.buffer);
+      let mem = new Int8Array(instance.exports.memory.buffer);
+      // mem = mem.slice(1024);
 
-      console.log(mem[0], mem[1]);
       console.log("_____mem.length ", mem.length) // 2 ^15 w clang - 2 ^22 w emcc
       for (let i = 0; i < mem.length; i++) {
         if (0 !== mem[i]) console.log('not zero in mem: ', i, mem[i])
       }
+      // const blob = new Blob([
+      //   String.fromCharCode(mem[1024]),
+      //   String.fromCharCode(mem[1025]),
+      //   String.fromCharCode(mem[1026]),
+      //   String.fromCharCode(mem[1027]),
+      //   String.fromCharCode(mem[1028]),
+      //   String.fromCharCode(mem[1029]),
+      //   toHex(mem[1030]), // ugg TODO read these bits right (hex chars from c)
+      //   toHex(mem[1032]),
+      //   toHex(mem[1034]),
+      //   toHex(mem[1035]),
+      //   toHex(mem[1036]),
+      //   toHex(mem[1037]),
+      //   toHex(mem[1038]),
+      //   toHex(mem[1039]),
+      //   toHex(mem[1040]),
+      //   toHex(mem[1041]),
+      //   toHex(mem[1042]),
+      //   toHex(mem[1043]),
+      //   toHex(mem[1044]),
+      //   toHex(mem[1045]),
+      //   toHex(mem[1046])
       const blob = new Blob([
-        String.fromCharCode(mem[1024]),
-        String.fromCharCode(mem[1025]),
-        String.fromCharCode(mem[1026]),
-        String.fromCharCode(mem[1027]),
-        String.fromCharCode(mem[1028]),
-        String.fromCharCode(mem[1029]),
-        mem[1030], // ugg TODO read these bits right (hex chars from c)
-        mem[1032],
-        mem[1034]
+        mem.slice(1024, 1024+49)
       ], { type: 'application/octet-stream' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -92,7 +106,18 @@
       a.download = 'binary-' + Date.now() + '.gif';
       document.body.appendChild(a);
       a.click();
+
+      console.log("_____String, mem 1029:", String.fromCharCode(mem[1029]), mem[1029], toHex(mem[1029]))
+      console.log("_____String, mem 1030:", String.fromCharCode(mem[1030]), mem[1030], toHex(mem[1030]))
+      console.log("_____String, mem 1031:", String.fromCharCode(mem[1031]), mem[1031], toHex(mem[1031]))
+      console.log("_____String, mem 1032:", String.fromCharCode(mem[1032]), mem[1032], toHex(mem[1032]))
+      console.log("_____String, mem 1033:", String.fromCharCode(mem[1033]), mem[1033], toHex(mem[1033]))
     });
+  }
+
+  // https://stackoverflow.com/a/13240395 // nice slice
+  function toHex(d) {
+    return ("0"+(Number(d).toString(16))).slice(-2);
   }
 
 
