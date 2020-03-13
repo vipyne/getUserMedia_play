@@ -9,10 +9,13 @@
     const config = {
       module: {},
       env: {
+        consoleLog: console.log,
         wasi_snapshot_preview1: function(){},
         puts: function(){},
         memory_base: 0,
+        heap_base: 2000,
         __memory_base: 0,
+        __heap_base: 2000,
         table_base: 0,
         memory : new WebAssembly.Memory({ initial: 1 }),
         table: new WebAssembly.Table({
@@ -30,6 +33,7 @@
     fetch('./gify.wasm').then(response =>
       response.arrayBuffer()
     ).then(bytes =>
+      // WebAssembly.instantiate(bytes)
       WebAssembly.instantiate(bytes, config)
       //// resolves to obj
       // {
@@ -47,6 +51,8 @@
 
       console.log("_____instance.exports ", instance.exports);
       console.log("_____module ", module);
+      console.log("_____WebAssembly.Module.exports(module) ", WebAssembly.Module.exports(module));
+      console.log("_____WebAssembly.Module.imports(module) ", WebAssembly.Module.imports(module));
       // when compiled STANDALONE_WASM with `emcc`,
       // instance.exports ===
       // memory: Memory {}
@@ -69,11 +75,57 @@
       // mem.length // 2 ^15 w clang - 2 ^22 w emcc
 
       const mem = new Int8Array(instance.exports.memory.buffer);
-      const memBase = instance.exports.__global_base.value;
-      const gifFileLength = 76;
+      const memBase = 1024; // todo get this __global_base from emcc | instance.exports.__global_base.value;
+      const gifFileLength = 64;
+
+    // const jsArray = [1, 2, 3, 4, 5];
+    // // Allocate memory for 5 32-bit integers
+    // // and return get starting address.
+    // const cArrayPointer = instance.exports.malloc(jsArray.length * 4);
+    // // Turn that sequence of 32-bit integers
+    // // into a Uint32Array, starting at that address.
+    // const cArray = new Uint32Array(
+    //   instance.exports.memory.buffer,
+    //   cArrayPointer,
+    //   jsArray.length
+    // );
+    // // Copy the values from JS to C.
+    // cArray.set(jsArray);
+    // // Run the function, passing the starting address and length.
+    // console.log(instance.exports.sum(cArrayPointer, cArray.length));
 
       for (let i = 0; i < mem.length; i++) {
-        // if (0 !== mem[i]) console.log('not zero in mem: ', i, mem[i])
+        if (37 === mem[i]) console.log('1 _______________: ', i, mem[i])
+      }
+      for (let i = 524000; i < mem.length; i++) {
+        if (0 !== mem[i]) console.log('1 not zero in mem: ', i, mem[i])
+      }
+
+      const string = ['s'.charCodeAt(),'2','3','4','5','6','7','8']
+      const strPointer = instance.exports.malloc(string.length * 4);
+      const cArr = new Int8Array(instance.exports.memory.buffer,
+                                 strPointer,
+                                 string.length);
+      cArr.set(string);
+
+      let fromGif = instance.exports.gif(strPointer, 8);
+      console.log("__1___fromGif ", fromGif)
+      console.log("from gif + memBase", fromGif);
+
+      console.log("_____mem[fromGif] ", mem[fromGif])
+      console.log("_____mem[fromGif+1] ", mem[fromGif+1])
+      console.log("_____mem[fromGif+2] ", mem[fromGif+2])
+      console.log("_____mem[fromGif+3] ", mem[fromGif+3])
+      console.log("_____mem[fromGif+4] ", mem[fromGif+4])
+      console.log("_____mem[fromGif+5] ", mem[fromGif+5])
+      console.log("_____mem[fromGif+6] ", mem[fromGif+6])
+      console.log("_____mem[fromGif+7] ", mem[fromGif+7])
+
+      for (let i = 0; i < mem.length; i++) {
+        if (37 === mem[i]) console.log('2 _______________: ', i, mem[i])
+      }
+      for (let i = 524000; i < mem.length; i++) {
+        if (0 !== mem[i]) console.log('2 not zero in mem: ', i, mem[i])
       }
 
       const blob = new Blob([
@@ -84,7 +136,7 @@
       a.href = url;
       a.download = 'binary-' + Date.now() + '.gif';
       document.body.appendChild(a);
-      a.click();
+      // a.click();
     });
   }
 
@@ -127,7 +179,7 @@
       runWASM(blob);
     })
   }, false);
-  // runWASM();
+  runWASM();
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
