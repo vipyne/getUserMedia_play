@@ -78,47 +78,50 @@
       const memBase = 1024; // todo get this __global_base from emcc | instance.exports.__global_base.value;
       const gifFileLength = 64;
 
-      // secret message
-      let string = [];
-      if (secretMessage) {
-        for (let i = 0; i < secretMessage.length - 1; i++) {
-          string.push(secretMessage[i].charCodeAt());
-        }
-        string.push(' '.charCodeAt());
-      } else {
-        string = [
-          's'.charCodeAt(),
-          'e'.charCodeAt(),
-          'c'.charCodeAt(),
-          'r'.charCodeAt(),
-          'e'.charCodeAt(),
-          't'.charCodeAt(),
-          ' '.charCodeAt(),
-          'm'.charCodeAt(),
-          'e'.charCodeAt(),
-          's'.charCodeAt(),
-          's'.charCodeAt(),
-          'a'.charCodeAt(),
-          'g'.charCodeAt(),
-          'e'.charCodeAt()
-        ];
-      }
-      const strPointer = instance.exports.malloc(string.length * 4);
-      const cArr = new Int8Array(instance.exports.memory.buffer,
-                                 strPointer,
-                                 string.length);
-      cArr.set(string);
+      // // secret message
+      // let string = [];
+      // if (secretMessage) {
+      //   for (let i = 0; i < secretMessage.length - 1; i++) {
+      //     string.push(secretMessage[i].charCodeAt());
+      //   }
+      //   string.push(' '.charCodeAt());
+      // } else {
+      //   string = [
+      //     's'.charCodeAt(),
+      //     'e'.charCodeAt(),
+      //     'c'.charCodeAt(),
+      //     'r'.charCodeAt(),
+      //     'e'.charCodeAt(),
+      //     't'.charCodeAt(),
+      //     ' '.charCodeAt(),
+      //     'm'.charCodeAt(),
+      //     'e'.charCodeAt(),
+      //     's'.charCodeAt(),
+      //     's'.charCodeAt(),
+      //     'a'.charCodeAt(),
+      //     'g'.charCodeAt(),
+      //     'e'.charCodeAt()
+      //   ];
+      // }
+      // const strPointer = instance.exports.malloc(string.length * 4);
+      // const cArr = new Int8Array(instance.exports.memory.buffer,
+      //                            strPointer,
+      //                            string.length);
+      // cArr.set(string);
 
-      // // gif file
-      // const gif = inputGif;
-      // const gifPointer = instance.exports.malloc(inputGif.byteLength * 4);
-      // const gArr = new Int8Array(instance.exports.memory.buffer,
-      //                            gifPointer,
-      //                            inputGif.byteLength);
-      // gArr.set(gif);
+      // gif file
+      const gif = inputGif;
+      const gifPointer = instance.exports.malloc(inputGif.byteLength * 4);
+      const gArr = new Int8Array(instance.exports.memory.buffer,
+                                 gifPointer,
+                                 inputGif.byteLength);
+      gArr.set(new Int8Array(gif));
+      console.log("_____gArr.byteOffset ", gArr.byteOffset)
+      console.log("_____gArr.length ", gArr.length)
+      console.log("_____gArr.byteLength ", gArr.byteLength)
 
-      let fromGif = instance.exports.gif(strPointer, string.length + 1)//, strPointer, string.length);
-      // let fromGif = instance.exports.gif(gifPointer, inputGif.byteLength)//, strPointer, string.length);
+      // let fromGif = instance.exports.gif(strPointer, string.length + 1)//, strPointer, string.length);
+      let fromGif = instance.exports.gif(gifPointer, inputGif.byteLength)//, strPointer, string.length);
       console.log("__1___fromGif ", fromGif)
       console.log("from gif + memBase", fromGif);
 
@@ -139,8 +142,8 @@
 
       const blob = new Blob([
         // testBlob
-        mem.slice(fromGif, fromGif + string.length)
-        // mem.slice(fromGif, fromGif + inputGif.byteLength )//+ string.length)
+        // mem.slice(fromGif, fromGif + string.length)
+        mem.slice(fromGif, fromGif + inputGif.byteLength + 3000)//+ string.length)
       ]
       , { type: 'application/octet-stream' });
       const url = window.URL.createObjectURL(blob);
