@@ -50,7 +50,7 @@ char * gif(char * gif, int gifLength){//, char * msg, int msgLength) { // char *
 	// char *output = (char*)malloc(sizeof(char) * (gifLength + msgLength));
 	char *output = (char*)malloc(sizeof(char) * (gifLength));
 
-	for (int i = 0; i < gifLength - 1; i++) {
+	for (int i = 0; i < gifLength; i++) {
 		output[i] = gif[i];
 	}
 

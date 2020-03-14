@@ -79,23 +79,30 @@
       const gifFileLength = 64;
 
       // secret message
-      // string = formdata || 'secret message'
-      const string = [
-        's'.charCodeAt(),
-        'e'.charCodeAt(),
-        'c'.charCodeAt(),
-        'r'.charCodeAt(),
-        'e'.charCodeAt(),
-        't'.charCodeAt(),
-        ' '.charCodeAt(),
-        'm'.charCodeAt(),
-        'e'.charCodeAt(),
-        's'.charCodeAt(),
-        's'.charCodeAt(),
-        'a'.charCodeAt(),
-        'g'.charCodeAt(),
-        'e'.charCodeAt()
-      ];
+      let string = [];
+      if (secretMessage) {
+        for (let i = 0; i < secretMessage.length - 1; i++) {
+          string.push(secretMessage[i].charCodeAt());
+        }
+        string.push(' '.charCodeAt());
+      } else {
+        string = [
+          's'.charCodeAt(),
+          'e'.charCodeAt(),
+          'c'.charCodeAt(),
+          'r'.charCodeAt(),
+          'e'.charCodeAt(),
+          't'.charCodeAt(),
+          ' '.charCodeAt(),
+          'm'.charCodeAt(),
+          'e'.charCodeAt(),
+          's'.charCodeAt(),
+          's'.charCodeAt(),
+          'a'.charCodeAt(),
+          'g'.charCodeAt(),
+          'e'.charCodeAt()
+        ];
+      }
       const strPointer = instance.exports.malloc(string.length * 4);
       const cArr = new Int8Array(instance.exports.memory.buffer,
                                  strPointer,
@@ -110,7 +117,7 @@
       //                            inputGif.byteLength);
       // gArr.set(gif);
 
-      let fromGif = instance.exports.gif(strPointer, string.length)//, strPointer, string.length);
+      let fromGif = instance.exports.gif(strPointer, string.length + 1)//, strPointer, string.length);
       // let fromGif = instance.exports.gif(gifPointer, inputGif.byteLength)//, strPointer, string.length);
       console.log("__1___fromGif ", fromGif)
       console.log("from gif + memBase", fromGif);
@@ -176,12 +183,15 @@
   const vid3 = document.getElementById('my-border');
   const name = document.getElementById('name');
   let interval = 0;
+  let secretMessage = '';
 
   inputGifSelector.addEventListener('change', (event) => {
     const inputGif = event.target.files[0];
     if ('image/gif' !== inputGif.type) return alert('upload a .gif file')
     inputGif.arrayBuffer().then((blob) => {
       console.log("_____blob ", blob)
+      // form.submit();
+      console.log("_____secretMessage ", secretMessage)
       runWASM(blob);
     })
   }, false);
@@ -189,7 +199,16 @@
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    button.click();
+    event.stopPropagation();
+    secretMessage = inputName.value;
+    // button.click();
+  })
+
+  form.addEventListener('change', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    secretMessage = inputName.value;
+    // button.click();
   })
 
   button.addEventListener('click', (event) => {
