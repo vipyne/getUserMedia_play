@@ -78,37 +78,40 @@
       const memBase = 1024; // todo get this __global_base from emcc | instance.exports.__global_base.value;
       const gifFileLength = 64;
 
-    // const jsArray = [1, 2, 3, 4, 5];
-    // // Allocate memory for 5 32-bit integers
-    // // and return get starting address.
-    // const cArrayPointer = instance.exports.malloc(jsArray.length * 4);
-    // // Turn that sequence of 32-bit integers
-    // // into a Uint32Array, starting at that address.
-    // const cArray = new Uint32Array(
-    //   instance.exports.memory.buffer,
-    //   cArrayPointer,
-    //   jsArray.length
-    // );
-    // // Copy the values from JS to C.
-    // cArray.set(jsArray);
-    // // Run the function, passing the starting address and length.
-    // console.log(instance.exports.sum(cArrayPointer, cArray.length));
-
-      for (let i = 0; i < mem.length; i++) {
-        if (37 === mem[i]) console.log('1 _______________: ', i, mem[i])
-      }
-      for (let i = 524000; i < mem.length; i++) {
-        if (0 !== mem[i]) console.log('1 not zero in mem: ', i, mem[i])
-      }
-
-      const string = ['s'.charCodeAt(),'2','3','4','5','6','7','8']
+      // secret message
+      // string = formdata || 'secret message'
+      const string = [
+        's'.charCodeAt(),
+        'e'.charCodeAt(),
+        'c'.charCodeAt(),
+        'r'.charCodeAt(),
+        'e'.charCodeAt(),
+        't'.charCodeAt(),
+        ' '.charCodeAt(),
+        'm'.charCodeAt(),
+        'e'.charCodeAt(),
+        's'.charCodeAt(),
+        's'.charCodeAt(),
+        'a'.charCodeAt(),
+        'g'.charCodeAt(),
+        'e'.charCodeAt()
+      ];
       const strPointer = instance.exports.malloc(string.length * 4);
       const cArr = new Int8Array(instance.exports.memory.buffer,
                                  strPointer,
                                  string.length);
       cArr.set(string);
 
-      let fromGif = instance.exports.gif(strPointer, 8);
+      // // gif file
+      // const gif = inputGif;
+      // const gifPointer = instance.exports.malloc(inputGif.byteLength * 4);
+      // const gArr = new Int8Array(instance.exports.memory.buffer,
+      //                            gifPointer,
+      //                            inputGif.byteLength);
+      // gArr.set(gif);
+
+      let fromGif = instance.exports.gif(strPointer, string.length)//, strPointer, string.length);
+      // let fromGif = instance.exports.gif(gifPointer, inputGif.byteLength)//, strPointer, string.length);
       console.log("__1___fromGif ", fromGif)
       console.log("from gif + memBase", fromGif);
 
@@ -121,22 +124,24 @@
       console.log("_____mem[fromGif+6] ", mem[fromGif+6])
       console.log("_____mem[fromGif+7] ", mem[fromGif+7])
 
+      let testBlob = [];
       for (let i = 0; i < mem.length; i++) {
-        if (37 === mem[i]) console.log('2 _______________: ', i, mem[i])
-      }
-      for (let i = 524000; i < mem.length; i++) {
-        if (0 !== mem[i]) console.log('2 not zero in mem: ', i, mem[i])
+        if (0 !== mem[i]) console.log('2 _______________: ', i, String.fromCharCode(mem[i]))
+          // testBlob.push(String.fromCharCode(mem[i]));
       }
 
       const blob = new Blob([
-        mem.slice(memBase, memBase + gifFileLength)
-      ], { type: 'application/octet-stream' });
+        // testBlob
+        mem.slice(fromGif, fromGif + string.length)
+        // mem.slice(fromGif, fromGif + inputGif.byteLength )//+ string.length)
+      ]
+      , { type: 'application/octet-stream' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = 'binary-' + Date.now() + '.gif';
       document.body.appendChild(a);
-      // a.click();
+      a.click();
     });
   }
 
@@ -174,12 +179,13 @@
 
   inputGifSelector.addEventListener('change', (event) => {
     const inputGif = event.target.files[0];
+    if ('image/gif' !== inputGif.type) return alert('upload a .gif file')
     inputGif.arrayBuffer().then((blob) => {
       console.log("_____blob ", blob)
       runWASM(blob);
     })
   }, false);
-  runWASM();
+  // runWASM();
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
