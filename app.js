@@ -25,7 +25,6 @@
         abort: function(){}
       },
       imports: {
-        derp: arg => console.log("_____arg ", arg)
       }
     };
 
@@ -74,40 +73,37 @@
 
       // mem.length // 2 ^15 w clang - 2 ^22 w emcc
 
-      const mem = new Int8Array(instance.exports.memory.buffer);
-      const memBase = 1024; // todo get this __global_base from emcc | instance.exports.__global_base.value;
-      const gifFileLength = 64;
 
-      // // secret message
-      // let string = [];
-      // if (secretMessage) {
-      //   for (let i = 0; i < secretMessage.length - 1; i++) {
-      //     string.push(secretMessage[i].charCodeAt());
-      //   }
-      //   string.push(' '.charCodeAt());
-      // } else {
-      //   string = [
-      //     's'.charCodeAt(),
-      //     'e'.charCodeAt(),
-      //     'c'.charCodeAt(),
-      //     'r'.charCodeAt(),
-      //     'e'.charCodeAt(),
-      //     't'.charCodeAt(),
-      //     ' '.charCodeAt(),
-      //     'm'.charCodeAt(),
-      //     'e'.charCodeAt(),
-      //     's'.charCodeAt(),
-      //     's'.charCodeAt(),
-      //     'a'.charCodeAt(),
-      //     'g'.charCodeAt(),
-      //     'e'.charCodeAt()
-      //   ];
-      // }
-      // const strPointer = instance.exports.malloc(string.length * 4);
-      // const cArr = new Int8Array(instance.exports.memory.buffer,
-      //                            strPointer,
-      //                            string.length);
-      // cArr.set(string);
+      // secret message
+      let string = [];
+      if (secretMessage) {
+        for (let i = 0; i < secretMessage.length; i++) {
+          string.push(secretMessage[i].charCodeAt());
+        }
+        string.push(' '.charCodeAt());
+      } else {
+        string = [
+          's'.charCodeAt(),
+          'e'.charCodeAt(),
+          'c'.charCodeAt(),
+          'r'.charCodeAt(),
+          'e'.charCodeAt(),
+          't'.charCodeAt(),
+          ' '.charCodeAt(),
+          'm'.charCodeAt(),
+          'e'.charCodeAt(),
+          's'.charCodeAt(),
+          's'.charCodeAt(),
+          'a'.charCodeAt(),
+          'g'.charCodeAt(),
+          'e'.charCodeAt()
+        ];
+      }
+      const strPointer = instance.exports.malloc(string.length * 4);
+      const cArr = new Int8Array(instance.exports.memory.buffer,
+                                 strPointer,
+                                 string.length);
+      cArr.set(string);
 
       // gif file
       const gif = inputGif;
@@ -120,8 +116,15 @@
       console.log("_____gArr.length ", gArr.length)
       console.log("_____gArr.byteLength ", gArr.byteLength)
 
+      while (inputGif.byteLength * 2 + string.length > instance.exports.memory.buffer) {
+        instance.exports.__growWasmMemory();
+      }
+
+      const mem = new Int8Array(instance.exports.memory.buffer);
+      const memBase = 1024; // todo get this __global_base from emcc | instance.exports.__global_base.value;
+
       // let fromGif = instance.exports.gif(strPointer, string.length + 1)//, strPointer, string.length);
-      let fromGif = instance.exports.gif(gifPointer, inputGif.byteLength)//, strPointer, string.length);
+      let fromGif = instance.exports.gif(gifPointer, inputGif.byteLength, strPointer, string.length);
       console.log("__1___fromGif ", fromGif)
       console.log("from gif + memBase", fromGif);
 
@@ -143,7 +146,7 @@
       const blob = new Blob([
         // testBlob
         // mem.slice(fromGif, fromGif + string.length)
-        mem.slice(fromGif, fromGif + inputGif.byteLength + 3000)//+ string.length)
+        mem.slice(fromGif, fromGif + inputGif.byteLength + string.length + 3)
       ]
       , { type: 'application/octet-stream' });
       const url = window.URL.createObjectURL(blob);
@@ -192,13 +195,9 @@
     const inputGif = event.target.files[0];
     if ('image/gif' !== inputGif.type) return alert('upload a .gif file')
     inputGif.arrayBuffer().then((blob) => {
-      console.log("_____blob ", blob)
-      // form.submit();
-      console.log("_____secretMessage ", secretMessage)
       runWASM(blob);
     })
   }, false);
-  // runWASM();
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();

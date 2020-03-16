@@ -35,7 +35,7 @@ exit;
 #include <emscripten.h>
 
 EMSCRIPTEN_KEEPALIVE
-char * gif(char * gif, int gifLength){//, char * msg, int msgLength) { // char * secret_message
+char * gif(char * gif, int gifLength, char * msg, int msgLength) { // char * secret_message
 
 	// http://giflib.sourceforge.net/whatsinagif/bits_and_bytes.html
 	// static char gif_header[6] = {'G', 'I' ,'F' , '8', '9', 'a' };
@@ -46,20 +46,25 @@ char * gif(char * gif, int gifLength){//, char * msg, int msgLength) { // char *
   // static char image_data[] = {0x02, 0x16, 0x8C, 0x2D, 0x99, 0x87, 0x2A, 0x1C, 0xDC, 0x33, 0xA0, 0x02, 0x75, 0xEC, 0x95, 0xFA, 0xA8, 0xDE, 0x60, 0x8C, 0x04, 0x91, 0x4C, 0x01, 0x00 };
   // static char trailer[] = { 0x3B };
 
-  // static char sec_msg = {0x21, 0x01, 0x05, 's', 'e', 'c', 'r', 'e', 't', ' ', 'n', 'a', 'r', 'f', 0x00, 0x3B};
-	// char *output = (char*)malloc(sizeof(char) * (gifLength + msgLength));
-	char *output = (char*)malloc(sizeof(char) * (gifLength));
+	// total length == gif length + message length + 3 bytes for message header
+	char *output = (char*)malloc(sizeof(char) * (gifLength + 3 + msgLength));
 
-	for (int i = 0; i < gifLength; i++) {
+	for (int i = 0; i < gifLength - 1; i++) {
 		output[i] = gif[i];
 	}
 
-	// for (int i = gifLength - 1; i < msgLength; i++) {
-	// 	output[i] = msg[i];
-	// }
+	// secret message header
+	static char sec_msg[2] = {0x21, 0x01};
+	output[gifLength - 1] = sec_msg[0];
+	output[gifLength]     = sec_msg[1];
+	output[gifLength + 1] = (char)msgLength;
 
-	// // trailer
-	// output[gifLength + msgLength - 1] = 0x3B;
+	for (int i = gifLength + 2; i < gifLength + 3 + msgLength; i++) {
+		output[i] = msg[i - (gifLength + 2)];
+	}
+
+	// trailer
+	output[gifLength + 3 + msgLength - 1] = 0x3B;
 
   return output;
 }
