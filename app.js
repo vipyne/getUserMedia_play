@@ -139,7 +139,7 @@
 
       let testBlob = [];
       for (let i = 0; i < mem.length; i++) {
-        if (0 !== mem[i]) console.log('2 _______________: ', i, String.fromCharCode(mem[i]))
+        // if (0 !== mem[i]) console.log('2 _______________: ', i, String.fromCharCode(mem[i]))
           // testBlob.push(String.fromCharCode(mem[i]));
       }
 
@@ -155,6 +155,9 @@
       a.download = 'binary-' + Date.now() + '.gif';
       document.body.appendChild(a);
       a.click();
+
+      instance.exports.free(gifPointer);
+      instance.exports.free(strPointer);
     });
   }
 
@@ -193,7 +196,10 @@
 
   inputGifSelector.addEventListener('change', (event) => {
     const inputGif = event.target.files[0];
-    if ('image/gif' !== inputGif.type) return alert('upload a .gif file')
+    if ('image/gif' !== inputGif.type ||
+      3000000 < inputGif.size) {
+      return alert('Please upload a .gif smaller than 3mb');
+    }
     inputGif.arrayBuffer().then((blob) => {
       runWASM(blob);
     })

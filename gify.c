@@ -7,6 +7,8 @@ emcc \
 gify.c -o gify.wasm
 exit;
 # endif
+// -fsanitize=address \
+// -s ALLOW_MEMORY_GROWTH=1 \
 // --post-js app.js \
 // gify.c -o gify.js
 // -s MODULARIZE=1 \
